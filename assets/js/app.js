@@ -9,11 +9,12 @@ import css from "../css/app.scss"
 //
 // Import dependencies
 //
-import "phoenix_html"
+import "phoenix_html";
 
 import jQuery from 'jquery';
 window.jQuery = window.$ = jQuery;
 import "bootstrap";
+import _ from "lodash";
 
 // Import local files
 //
@@ -21,6 +22,11 @@ import "bootstrap";
 // import socket from "./socket"
 
 import tasks3_init from "./tasks3";
+
+//$(() => {
+//  let node = $('#root')[0];
+//  task3_init(node);
+//});
 
 window.addEventListener("load", (_ev) => {
   let root = document.getElementById('root');

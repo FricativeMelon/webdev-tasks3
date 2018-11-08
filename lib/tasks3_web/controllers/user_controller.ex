@@ -11,12 +11,13 @@ defmodule Tasks3Web.UserController do
     render(conn, "index.json", users: users)
   end
 
-  def create(conn, %{"user" => user_params}) do
-    with {:ok, %User{} = user} <- Users.create_user(user_params) do
+  def create(conn, %{"name" => name, "password" => password}) do
+    t = %{"name" => name, "password_hash" => Comeonin.Argon2.hashpwsalt(password)}
+    with {:ok, %User{} = user} <- Users.create_user(t) do 
       conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.user_path(conn, :show, user))
-      |> render("show.json", user: user)
+      |> put_session(:user_id, user.id)
+      |> put_resp_header("location", Routes.page_path(conn, :index))
+      |> redirect(to: Routes.page_path(conn, :index))
     end
   end
 

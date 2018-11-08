@@ -1,24 +1,17 @@
 defmodule Tasks3Web.SessionController do
   use Tasks3Web, :controller
 
-  def create(conn, %{"name" => name}) do
-    user = Tasks3.Users.get_user_by_name(name)
-    if user do
+  def create(conn, %{"name" => name, "password" => password}) do
+    with %Tasks3.Users.User{} = user <- Tasks3.Users.get_and_auth_user(name, password) do
+      resp = %{
+        data: %{
+          token: Phoenix.Token.sign(Tasks3Web.Endpoint, "user_id", user.id),
+          user_id: user.id,
+        }
+      }
       conn
-      |> put_session(:user_id, user.id)
-      |> put_flash(:info, "Welcome back #{user.name}")
-      |> redirect(to: Routes.page_path(conn, :index))
-    else
-      conn
-      |> put_flash(:error, "Login failed.")
-      |> redirect(to: Routes.page_path(conn, :index))
+      |> put_resp_header("content-type", "application/json; charset=utf-8")
+      |> send_resp(:created, Jason.encode!(resp))
     end
-  end
-
-  def delete(conn, _params) do
-    conn
-    |> delete_session(:user_id)
-    |> put_flash(:info, "Logged out.")
-    |> redirect(to: Routes.page_path(conn, :index))
   end
 end

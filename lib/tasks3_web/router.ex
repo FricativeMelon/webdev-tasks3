@@ -25,8 +25,6 @@ defmodule Tasks3Web.Router do
 
   scope "/ajax", Tasks3Web do
     pipe_through :ajax  
-    resources "/users", UserController, except: [:new, :edit]
-    resources "/tasks", TaskController, except: [:new, :edit]
   end
 
   scope "/", Tasks3Web do
@@ -34,6 +32,13 @@ defmodule Tasks3Web.Router do
 
     get "/", PageController, :index
     resources "/sessions", SessionController, only: [:create, :delete], singleton: true
+  end
+
+  scope "/api/v1", Tasks3Web do
+    pipe_through :api
+
+    resources "/users", UserController, except: [:new, :edit]
+    resources "/tasks", TaskController, except: [:new, :edit]
   end
 
   # Other scopes may use custom stacks.

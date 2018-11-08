@@ -1,8 +1,11 @@
-<div class="row">
-  <div class="column">
-    <h1>Tasktracker</h1>
-    <div id="root">
-      React component loading...
+<div id="root">
+  <div class="row">
+    <div class ="col-12">
+      <p>React component loading...</p>
     </div>
   </div>
 </div>
+
+<script>
+  window.users = <%= raw Jason.encode!(@users) %>;
+</script>

@@ -27,9 +27,7 @@ module.exports = (env, options) => ({
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [
-              ["env"]
-	    ],
+            presets: ['env', 'react'],
           },
         },
       },
@@ -44,7 +42,7 @@ module.exports = (env, options) => ({
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.css'],
+    extensions: ['.js', '.jsx', '.css', '.scss'],
   },
   plugins: [
     new MiniCssExtractPlugin({ filename: '../css/app.css' }),

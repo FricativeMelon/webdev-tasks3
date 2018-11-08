@@ -43,6 +43,14 @@ defmodule Tasks3.Users do
     Repo.get_by(User, name: name)
   end
 
+  def get_and_auth_user(name, password) do
+    user = get_user_by_name(name)
+    case Comeonin.Argon2.check_pass(user, password) do
+      {:ok, user} -> user
+      _else       -> nil
+    end
+  end
+
   @doc """
   Creates a user.
 
