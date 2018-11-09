@@ -31,7 +31,6 @@ defmodule Tasks3Web.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    resources "/sessions", SessionController, only: [:create, :delete], singleton: true
   end
 
   scope "/api/v1", Tasks3Web do
@@ -39,6 +38,7 @@ defmodule Tasks3Web.Router do
 
     resources "/users", UserController, except: [:new, :edit]
     resources "/tasks", TaskController, except: [:new, :edit]
+    resources "/sessions", SessionController, only: [:create, :delete], singleton: true
   end
 
   # Other scopes may use custom stacks.

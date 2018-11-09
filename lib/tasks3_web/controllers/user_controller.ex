@@ -13,11 +13,17 @@ defmodule Tasks3Web.UserController do
 
   def create(conn, %{"name" => name, "password" => password}) do
     t = %{"name" => name, "password_hash" => Comeonin.Argon2.hashpwsalt(password)}
-    with {:ok, %User{} = user} <- Users.create_user(t) do 
-      conn
-      |> put_session(:user_id, user.id)
-      |> put_resp_header("location", Routes.page_path(conn, :index))
-      |> redirect(to: Routes.page_path(conn, :index))
+    case Users.get_user_by_name(name) do
+      nil ->
+        with {:ok, %User{} = user} <- Users.create_user(t) do 
+          conn
+          |> put_resp_header("location", Routes.page_path(conn, :index))
+          |> redirect(to: Routes.page_path(conn, :index))
+        end
+      _ ->
+        conn
+        |> put_resp_header("location", Routes.page_path(conn, :index))
+        |> redirect(to: Routes.page_path(conn, :index))
     end
   end
 
