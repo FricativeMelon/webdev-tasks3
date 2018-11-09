@@ -10,18 +10,10 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :tasks3, Tasks3Web.Endpoint,
-  force_ssl: [hsts: true],
   server: true,
   root: ".",
   version: Application.spec(:phoenix_distillery, :vsn),
-  http: [:inet6, port: {:system, "PORT"}],
-  https: [
-    :inet6,
-    port: 443,
-    cipher_suite: :strong,
-    keyfile: System.get_env("/etc/letsencrypt/live/tasks3.webdevka.fun/privkey.pem"),
-    certfile: System.get_env("/etc/letsencrypt/live/tasks3.webdevka.fun/fullchain.pem"),
-  ],
+  http: [:inet6, port: {:system, "PORT"} || 4000],
   url: [host: "tasks3.webdevka.fun", port: 443],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
