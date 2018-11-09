@@ -30,7 +30,6 @@ class Tasks3 extends React.Component {
     let password = form.find("[type=password]").val()
     let name = form.find("[type=name]").val()
     this.create_user(name, password)
-    this.create_session(name, password)
   }
   
   handle_login(ev) {
@@ -61,6 +60,7 @@ class Tasks3 extends React.Component {
         let state1 = _.assign({}, this.state, { ses_user: name, token: resp.data });
         this.setState(state1);
       },
+      error: (resp) => {}
     });
   }
 	 
