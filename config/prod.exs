@@ -13,6 +13,7 @@ config :tasks3, Tasks3Web.Endpoint,
   server: true,
   root: ".",
   version: Application.spec(:phoenix_distillery, :vsn),
+  https: [:inet6, port: {:system, "PORT"} || 4000],
   http: [:inet6, port: {:system, "PORT"} || 4000],
   url: [host: "tasks3.webdevka.fun", port: 443],
   cache_static_manifest: "priv/static/cache_manifest.json"
