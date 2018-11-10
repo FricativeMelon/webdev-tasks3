@@ -11,12 +11,13 @@ defmodule Tasks3Web.TaskController do
     render(conn, "index.json", tasks: tasks)
   end
 
-  def create(conn, %{"task" => task_params}) do
-    with {:ok, %Task{} = task} <- Tasks.create_task(task_params) do
+  def create(conn, %{"title" => title, "desc" => desc, "assigned_user" => assigned_user}) do
+    t = %{"title" => title, "desc" => desc, "assigned_user" => assigned_user, "completed" => false, "time_worked" => 0}
+    with {:ok, %Task{} = task} <- Tasks.create_task(t) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.task_path(conn, :show, task))
-      |> render("show.json", task: task)
+      |> put_resp_header("location", Routes.task_path(conn, :index))
+      |> redirect(to: Routes.task_path(conn, :index))
     end
   end
 

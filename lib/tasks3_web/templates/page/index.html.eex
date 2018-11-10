@@ -8,4 +8,5 @@
 
 <script>
   window.users = <%= raw Jason.encode!(@users) %>;
+  window.tasks = <%= raw Jason.encode!(@tasks) %>;
 </script>

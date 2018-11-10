@@ -15,6 +15,7 @@ defmodule Tasks3Web.TaskView do
       title: task.title,
       desc: task.desc,
       completed: task.completed,
-      time_worked: task.time_worked}
+      time_worked: task.time_worked,
+      assigned_user: task.assigned_user}
   end
 end
