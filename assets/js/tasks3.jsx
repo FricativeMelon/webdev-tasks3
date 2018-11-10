@@ -47,11 +47,28 @@ class Tasks3 extends React.Component {
     let form = $("#task-input-form")
     let title = form.find("[type=title]").val()
     let desc = form.find("[type=desc]").val()
+    let completed = form.find("[type=completed]").val()
     let assigned_user_name = form.find("[type=assigned_user_name]").val()
     let found = _.filter(this.state.users, (u) => u.name == assigned_user_name)
     if (found.length > 0) {
-      this.create_task(title, desc, found[0].id)
+      let ft = _.filter(this.state.tasks, (t) => t.title == title)
+      if (ft.length > 0) {
+        this.update_task(ft[0].id, title, desc, found[0].id, completed)
+      } else {
+        this.create_task(title, desc, found[0].id)
+      }
     }
+  }
+
+  update_task(id, title, desc, assigned_user, completed) {
+    $.ajax("/api/v1/tasks/" + id, {
+      method: "put",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify({id, title, desc, assigned_user, completed}),
+      success: (resp) => {},
+      error: (resp) => {},
+    });
   }
 
   create_task(title, desc, assigned_user) {
@@ -60,8 +77,7 @@ class Tasks3 extends React.Component {
       dataType: "json",
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify({title, desc, assigned_user}),
-      success: (resp) => {
-      },
+      success: (resp) => {},
       error: (resp) => {},
     });
   }
@@ -76,6 +92,7 @@ class Tasks3 extends React.Component {
       },
     });
   }
+
   create_session(name, password) {
     $.ajax("/api/v1/sessions", {
       method: "post",
@@ -102,7 +119,6 @@ class Tasks3 extends React.Component {
       },
     });
   }
-
 
   fetch_tasks() {
     $.ajax("/api/v1/tasks", {
@@ -166,7 +182,8 @@ class Tasks3 extends React.Component {
           <input type="title" placeholder="title" />
           <input type="desc" placeholder="description" />
           <input type="assigned_user_name" placeholder="assigned user" />
-          <input type="submit" value="Create Task" className="btn btn-secondary" onClick={root.handle_task_input.bind(root)}/>
+          <input type="completed" placeholder="completed" />
+          <input type="submit" value="Create/Update Task" className="btn btn-secondary" onClick={root.handle_task_input.bind(root)}/>
         </form>
       </div>
   }
